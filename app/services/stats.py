@@ -120,3 +120,23 @@ def weekly_activity():
 def activity_summary():
     rows = _fetch(SUMMARY_SQL)
     return rows[0] if rows else {}
+
+
+LATEST_SUBMISSIONS_SQL = """
+SELECT p.problem_id, p.title, p.difficulty, s.status, s.attempts,
+       DATEDIFF(CURDATE(), s.submitted_at) AS days_ago,
+       (SELECT GROUP_CONCAT(t.name ORDER BY t.name SEPARATOR '|')
+        FROM problem_topics pt JOIN topics t ON t.topic_id = pt.topic_id
+        WHERE pt.problem_id = p.problem_id) AS topics
+FROM problems p
+JOIN submissions s ON s.submission_id = (
+    SELECT s2.submission_id FROM submissions s2
+    WHERE s2.problem_id = p.problem_id
+    ORDER BY s2.submitted_at DESC, s2.submission_id DESC LIMIT 1)
+ORDER BY p.problem_id
+"""
+
+
+def latest_submissions():
+    """Each attempted problem's most recent submission, with its topics."""
+    return _fetch(LATEST_SUBMISSIONS_SQL)
