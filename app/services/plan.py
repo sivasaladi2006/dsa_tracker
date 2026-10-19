@@ -5,6 +5,20 @@ from app.services.revision import due_reviews
 from app.services.stats import latest_submissions, topic_stats, untouched_problems
 
 
+def review_entries(latest_rows, count):
+    """Due reviews in API shape: title, difficulty, status, overdue_days, why."""
+    return [
+        {
+            "title": r["title"],
+            "difficulty": r["difficulty"],
+            "status": r["status"],
+            "overdue_days": r["overdue_days"],
+            "why": explain_review(r),
+        }
+        for r in due_reviews(latest_rows, count)
+    ]
+
+
 def build_plan(stats_rows, prereqs, untouched_rows, latest_rows,
                focus_count=3, problems_per_topic=3, review_count=3):
     """Pure function: turn the data into a practice plan (a dict, ready for JSON)."""
@@ -29,17 +43,7 @@ def build_plan(stats_rows, prereqs, untouched_rows, latest_rows,
             ],
         })
 
-    reviews = [
-        {
-            "title": r["title"],
-            "difficulty": r["difficulty"],
-            "status": r["status"],
-            "overdue_days": r["overdue_days"],
-            "why": explain_review(r),
-        }
-        for r in due_reviews(latest_rows, review_count)
-    ]
-    return {"focus": focus_entries, "reviews": reviews}
+    return {"focus": focus_entries, "reviews": review_entries(latest_rows, review_count)}
 
 
 def recommend(focus_count=3, problems_per_topic=3, review_count=3):
