@@ -137,9 +137,9 @@ pip install -r requirements.txt
 # 2. Configure the database connection
 cp .env.example .env            # then edit .env and set DB_PASSWORD
 
-# 3. Create the database and tables
+# 3. Create the database and tables (use the DB_NAME you set in .env)
 mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS dsa_tracker CHARACTER SET utf8mb4;"
-mysql -u root -p < data/schema.sql
+mysql -u root -p dsa_tracker < data/schema.sql
 
 # 4. Load the sample data
 python -m scripts.seed_topics

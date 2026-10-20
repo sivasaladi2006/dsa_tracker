@@ -1,5 +1,3 @@
-USE dsa_tracker;
-
 CREATE TABLE IF NOT EXISTS topics (
     topic_id  INT AUTO_INCREMENT PRIMARY KEY,
     name      VARCHAR(100) NOT NULL UNIQUE
