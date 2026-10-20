@@ -156,6 +156,16 @@ uvicorn app.main:app --reload
 python -m scripts.show_plan
 ```
 
+## Screenshots
+
+The interactive API docs, served at `/docs`:
+
+![API docs](docs/images/api-docs.png)
+
+A recommendation with its reasoning, from `GET /recommendations`:
+
+![A sample recommendation](docs/images/recommendations.png)
+
 ## Example output
 
 `python -m scripts.show_plan` (scores and day counts change with the date, because the sample data is fixed):
