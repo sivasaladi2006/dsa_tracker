@@ -1,5 +1,7 @@
 # DSA Tracker
 
+![CI](https://github.com/sivasaladi2006/dsa_tracker/actions/workflows/ci.yml/badge.svg)
+
 A backend service for DSA interview preparation. It logs practice, computes topic-wise performance, and recommends what to practice next, with a plain-English reason for every recommendation.
 
 **Stack:** Python 3.12, FastAPI, Pydantic, MySQL (PyMySQL), pytest
