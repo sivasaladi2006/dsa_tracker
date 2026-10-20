@@ -18,24 +18,35 @@ A backend service for DSA interview preparation. It logs practice, computes topi
 
 ## Architecture
 
-```mermaid
-flowchart LR
-    client[Client or Swagger UI] --> api[FastAPI routes - app/api]
-    api --> services[Services - stats, scoring, recommender, revision, explain, plan]
-    services --> algo[Algorithms - app/algorithms]
-    services --> db[(MySQL)]
+```text
+ Client or Swagger UI
+          |
+          v
+ FastAPI routes (app/api)
+          |
+          v
+ Services (app/services)
+ stats, scoring, recommender, revision, explain, plan
+          |                       |
+          v                       v
+ Algorithms                     MySQL
+ (app/algorithms)
 ```
 
 Routes validate input with Pydantic models and call services. The services hold all the logic. The planning code is written as plain functions that take data and return a plan, with no database access, so it can be tested directly.
 
 ## Database schema
 
-```mermaid
-erDiagram
-    topics ||--o{ problem_topics : tagged
-    problems ||--o{ problem_topics : has
-    problems ||--o{ submissions : attempted
-    topics ||--o{ topic_prerequisites : needs
+```text
+topics              (topic_id, name)
+problems            (problem_id, title, platform, difficulty, url)
+submissions         (submission_id, problem_id, status, attempts, time_taken_min, submitted_at, notes)
+problem_topics      (problem_id, topic_id)   links problems and topics (many-to-many)
+topic_prerequisites (topic_id, prereq_id)    prereq_id must be learned before topic_id
+
+problems 1 --- * submissions
+problems 1 --- * problem_topics * --- 1 topics
+topics   1 --- * topic_prerequisites   (twice: once as topic_id, once as prereq_id)
 ```
 
 - A problem can have several topics (many-to-many through `problem_topics`).
