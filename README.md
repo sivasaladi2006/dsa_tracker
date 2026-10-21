@@ -225,3 +225,7 @@ tests/             pytest suite (unit and integration)
 - Problem difficulties and topic tags are curated by hand and may differ from LeetCode's.
 - No front end. The API docs at `/docs` are the interface.
 - Binary search, the hash table and DFS are exercised by the demo script and the tests, not by the live API.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
